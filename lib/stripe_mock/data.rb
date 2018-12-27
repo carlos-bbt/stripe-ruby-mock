@@ -195,6 +195,51 @@ module StripeMock
       }.merge(params)
     end
 
+    def self.mock_payment_intent(params={})
+      payment_intent_id = params[:id] || "pi_1DLHrL0hUnt0MK8TqxpVv7Dw"
+      currency = params[:currency] || StripeMock.default_currency
+      {
+        id: payment_intent_id,
+        object: "payment_intent",
+        created: 1366194027,
+        livemode: false,
+        # allowed_source_types: [ "card" ],
+        # amount: 0,
+        amount_capturable: 0,
+        amount_received: 0,
+        application: nil,
+        application_fee_amount: nil,
+        canceled_at: nil,
+        cancellation_reason: nil,
+        capture_method: "automatic",
+        charges: {
+          object: "list",
+          data: [
+          ],
+          has_more: false,
+          total_count: 0,
+          url: "/v1/charges?payment_intent=#{payment_intent_id}"
+        },
+        client_secret: "#{payment_intent_id}_secret_IQXFxTQcwbgg0LXrJAyHiBJ4J",
+        confirmation_method: "publishable",
+        # currency: currency,
+        customer: nil,
+        description: nil,
+        last_payment_error: nil,
+        metadata: nil,
+        next_source_action: nil,
+        on_behalf_of: nil,
+        receipt_email: nil,
+        review: nil,
+        shipping: nil,
+        source: nil,
+        statement_descriptor: nil,
+        status: "requires_source",
+        transfer_data: nil,
+        transfer_group: nil
+      }.merge(params)
+    end
+
     def self.mock_refund(params={})
       currency = params[:currency] || StripeMock.default_currency
       {
