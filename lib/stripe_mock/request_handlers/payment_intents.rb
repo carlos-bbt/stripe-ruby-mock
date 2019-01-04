@@ -35,11 +35,19 @@ module StripeMock
         payment_intent = assert_existence :payment_intent, $1, payment_intents[$1]
 
         amount = payment_intent[:amount]
-        charge = Data.mock_charge(amount: amount)
+        charge_params = { amount: amount }
+        if source_data = params[:source_data]
+          if token = source_data[:token]
+            charge_params[:source] = token
+          end
+        end
+        charge = Data.mock_charge(charge_params)
         payment_intent[:charges][:data] << charge
-        payment_intent[:amount_received] = amount
-        payment_intent[:status] = 'succeeded'
-
+        payment_intent[:charges][:total_count] = payment_intent[:charges][:data].size
+        if charge[:status] == 'succeeded'
+          payment_intent[:amount_received] = amount
+          payment_intent[:status] = 'succeeded'
+        end
         payment_intent
       end
 
