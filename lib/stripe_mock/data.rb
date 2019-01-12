@@ -349,6 +349,68 @@ module StripeMock
       }, params)
     end
 
+    TOKEN_INFOS = {
+      tok_visa: {
+        card: {
+          brand: "Visa",
+          country: "US",
+          fingerprint: "43YwzEcrse3Xa7OD",
+          funding: "credit",
+          last4: "4242",
+          three_d_secure: "optional"
+        }
+      }
+    }
+
+    def self.mock_source_from_token(token, customer)
+      token_info = TOKEN_INFOS[token.to_sym] || TOKEN_INFOS[:tok_visa]
+      {
+        id: random_id('src', 24),
+        object: 'source',
+        amount: nil,
+        card: {
+          exp_month: 1,
+          exp_year: Date.today.year + 1,
+          name: nil,
+          address_line1_check: 'pass',
+          address_zip_check: 'pass',
+          cvc_check: 'pass',
+          tokenization_method: nil,
+          dynamic_last4: nil
+        },
+        client_secret: "src_client_secret_#{random_id('', 24)}",
+        created: Time.now.to_i,
+        currency: nil,
+        customer: customer,
+        flow: 'none',
+        livemode: false,
+        metadata: {
+
+        },
+        owner: {
+          address: {
+            city: 'Hill Valley',
+            country: 'US',
+            line1: '1640 Riverside Drive',
+            line2: nil,
+            postal_code: '95420',
+            state: 'CA'
+          },
+          email: 'doc@brown.com',
+          name: 'Doc Brown',
+          phone: '(916) 555-4385',
+          verified_address: nil,
+          verified_email: nil,
+          verified_name: nil,
+          verified_phone: nil
+        },
+        statement_descriptor: nil,
+        status: 'chargeable',
+        type: 'card',
+        usage: 'reusable'
+      }.deep_merge(token_info)
+    end
+
     def self.mock_bank_account(params={})
       currency = params[:currency] || StripeMock.default_currency
       {
@@ -1147,6 +1209,11 @@ module StripeMock
         livemode: false,
         secret: "ek_test_default"
       }
+    end
+
+    def self.random_id(prefix, length)
+      o = [('a'..'z'), ('A'..'Z'), ('0'..'9')].map(&:to_a).flatten
+      (0...length).map { o[rand(o.length)] }.join
     end
   end
 end
