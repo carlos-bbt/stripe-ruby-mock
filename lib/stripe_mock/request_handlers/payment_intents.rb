@@ -42,6 +42,7 @@ module StripeMock
           end
         end
         charge = Data.mock_charge(charge_params)
+        charges[charge[:id]] = charge
         payment_intent[:charges][:data] << charge
         payment_intent[:charges][:total_count] = payment_intent[:charges][:data].size
         if charge[:status] == 'succeeded'
