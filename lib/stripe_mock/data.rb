@@ -135,56 +135,7 @@ module StripeMock
     def self.mock_charge(params={})
       charge_id = params[:id] || "ch_1fD6uiR9FAA2zc"
       currency = params[:currency] || StripeMock.default_currency
-      if params[:source] == 'tok_chargeDeclinedIncorrectCvc'
-        params[:source] = {
-          id: "src_1DoU8wX47jYiXkLSazcFYjRx",
-          object: "source",
-          amount: nil,
-          card: {
-            exp_month: 2,
-            exp_year: 2045,
-            address_line1_check: "pass",
-            address_zip_check: "pass",
-            brand: "Visa",
-            country: "US",
-            cvc_check: "fail",
-            fingerprint: "T1cZ2O8GiPK6ysdQ",
-            funding: "credit",
-            last4: "0127",
-            three_d_secure: "optional",
-            name: nil,
-            tokenization_method: nil,
-            dynamic_last4: nil
-          },
-          client_secret: "src_client_secret_EH2VociLXR6aNbEczBo7dZEX",
-          created: 1546532515,
-          currency: nil,
-          customer: "cus_mMwgfLRBuA5bx2",
-          flow: "none",
-          livemode: false,
-          metadata: { },
-          owner: {
-            address: {
-              city: "San Francisco",
-              country: "US",
-              line1: "123 Main St",
-              line2: nil,
-              postal_code: "94105",
-              state: "CA"
-            },
-            email: nil,
-            name: "Jane Doe",
-            phone: nil,
-            verified_address: nil,
-            verified_email: nil,
-            verified_name: nil,
-            verified_phone: nil
-          },
-          statement_descriptor: nil,
-          status: "chargeable",
-          type: "card",
-          usage: "reusable"
-        }
+      if params[:source][:card][:fingerprint] == '4HXIKyPntzbtKW4M'
         params[:paid] = false
         params[:balance_transaction] = nil
         params[:failure_code] = 'incorrect_cvc'
@@ -357,6 +308,16 @@ module StripeMock
           fingerprint: "43YwzEcrse3Xa7OD",
           funding: "credit",
           last4: "4242",
+          three_d_secure: "optional"
+        }
+      },
+      tok_chargeDeclinedIncorrectCvc: {
+        card: {
+          brand: "Visa",
+          country: "US",
+          fingerprint: "4HXIKyPntzbtKW4M",
+          funding: "credit",
+          last4: "0127",
           three_d_secure: "optional"
         }
       }
