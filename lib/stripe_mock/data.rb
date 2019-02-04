@@ -311,6 +311,26 @@ module StripeMock
           three_d_secure: "optional"
         }
       },
+      tok_mastercard: {
+        card: {
+          brand: "MasterCard",
+          country: "US",
+          fingerprint: "eFeLRG0cAcawgq1e",
+          funding: "credit",
+          last4: "4444",
+          three_d_secure: "optional"
+        }
+      },
+      tok_amex: {
+        card: {
+          brand: "American Express",
+          country: "US",
+          fingerprint: "A0PLM2khd8O7O1D5",
+          funding: "credit",
+          last4: "0005",
+          three_d_secure: "optional"
+        }
+      },
       tok_chargeDeclinedIncorrectCvc: {
         card: {
           brand: "Visa",
