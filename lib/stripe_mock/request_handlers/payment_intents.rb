@@ -38,7 +38,12 @@ module StripeMock
         charge_params = { id: new_id('ch'), amount: amount }
         if source_data = params[:source_data]
           if token = source_data[:token]
-            charge_params[:source] = Data.mock_source_from_token(token, payment_intent[:customer])
+            source = charge_params[:source] = Data.mock_source_from_token(token, payment_intent[:customer])
+            if source_data[:save_source_to_customer]
+              customer_id = payment_intent[:customer]
+              customer = customers[customer_id]
+              customer[:sources][:data] << source
+            end
           end
         end
         charge = Data.mock_charge(charge_params)
