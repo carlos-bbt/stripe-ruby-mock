@@ -10,6 +10,13 @@ module StripeMock
       end
 
       def new_refund(route, method_url, params, headers)
+        if params[:reason]
+          reason = params[:reason]
+          unless %w(duplicate fraudulent requested_by_customer).include? reason
+            raise Stripe::InvalidRequestError.new('Invalid reason: must be one of duplicate, fraudulent, or requested_by_customer', '',
+                                                  http_status: 400)
+          end
+        end
         if headers && headers[:idempotency_key]
           params[:idempotency_key] = headers[:idempotency_key]
           if refunds.any?
