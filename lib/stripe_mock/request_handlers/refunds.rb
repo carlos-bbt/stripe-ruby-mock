@@ -27,6 +27,10 @@ module StripeMock
 
         charge = assert_existence :charge, params[:charge], charges[params[:charge]]
         params[:amount] ||= charge[:amount]
+        if params[:amount].zero?
+          raise Stripe::InvalidRequestError.new('Invalid positive integer', '',
+                                                http_status: 400)
+        end
         id = new_id('re')
         bal_trans_params = {
           amount: params[:amount] * -1,
