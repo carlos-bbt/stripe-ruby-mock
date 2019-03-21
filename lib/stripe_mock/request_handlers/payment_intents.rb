@@ -35,7 +35,7 @@ module StripeMock
         payment_intent = assert_existence :payment_intent, $1, payment_intents[$1]
 
         amount = payment_intent[:amount]
-        charge_params = { id: new_id('ch'), amount: amount }
+        charge_params = { id: new_id('ch'), amount: amount, currency: payment_intent[:currency] }
         if source_data = params[:source_data]
           if token = source_data[:token]
             source = charge_params[:source] = Data.mock_source_from_token(token, payment_intent[:customer])
