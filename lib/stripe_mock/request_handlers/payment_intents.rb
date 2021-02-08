@@ -18,7 +18,7 @@ module StripeMock
         raise 'Unexpected parameter "source"' if params[:source]
         raise 'Unexpected parameter "confirm"' if params[:confirm]
         raise 'Unexpected parameter "return_url"' if params[:return_url]
-        raise 'Unexpected parameter "save_source_to_customer"' if params[:save_source_to_customer]
+        raise 'Unexpected parameter "save_payment_method"' if params[:save_payment_method]
 
         payment_intents[ params[:id] ] = Data.mock_payment_intent(params)
       end
@@ -39,7 +39,7 @@ module StripeMock
         if source_data = params[:source_data]
           if token = source_data[:token]
             source = charge_params[:source] = Data.mock_source_from_token(token, payment_intent[:customer])
-            if source_data[:save_source_to_customer]
+            if source_data[:save_payment_method]
               customer_id = payment_intent[:customer]
               customer = customers[customer_id]
               customer[:sources][:data] << source
