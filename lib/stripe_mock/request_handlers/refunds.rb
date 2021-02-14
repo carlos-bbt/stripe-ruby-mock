@@ -42,6 +42,7 @@ module StripeMock
           :balance_transaction => balance_transaction_id,
           :id => id,
           :charge => charge[:id],
+          :currency => charge[:currency].downcase
         )
         add_refund_to_charge(refund, charge)
         refunds[id] = refund
